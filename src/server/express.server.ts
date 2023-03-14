@@ -1,5 +1,9 @@
 import express, { Express } from 'express';
-import ServerRouter from './ServerRouter';
+import { dbConnect } from './infrastructure/db/db.connect.js';
+import ServerRouter from './server.router.interface.js';
+import createDebug from 'debug';
+
+const debug = createDebug('Fntic: Express-server');
 
 export default class ExpressServer {
   app: Express;
@@ -21,8 +25,16 @@ export default class ExpressServer {
   }
 
   start(port: number): void {
-    this.app.listen(port, () => {
-      console.log(`Server running on port ${port}`);
+    debug(`Listening on http://localhost:${port}`);
+    dbConnect()
+      .then((mongoose) => {
+        this.app.listen(port);
+        debug('DB:', mongoose.connection.db.databaseName);
+      })
+      .catch((error) => this.app.emit('error', error));
+
+    this.app.on('error', (error) => {
+      debug(error);
     });
   }
 }
