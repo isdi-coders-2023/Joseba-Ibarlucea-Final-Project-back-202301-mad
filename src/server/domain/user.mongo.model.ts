@@ -19,6 +19,9 @@ const userSchema = new Schema<User>({
     type: String,
     required: true,
   },
+  role: {
+    type: String,
+  },
   favoriteTeam: {
     type: String,
   },
