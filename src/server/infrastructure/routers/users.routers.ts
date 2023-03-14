@@ -52,6 +52,8 @@ export default class UserRouter implements ServerRouter {
 
         req.body.password = await Auth.hash(req.body.password);
 
+        req.body.role = 'fan';
+
         const data = await this.userRegister.execute(body);
 
         res.status(201);
