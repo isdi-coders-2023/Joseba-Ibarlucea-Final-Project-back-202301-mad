@@ -16,8 +16,8 @@ export default class UserMongoRepo implements UserRepository {
     const data = await this.mongo.findById(id);
     return data;
   }
-  async update(id: string): Promise<void> {
-    await this.mongo.findByIdAndUpdate(id);
+  async update(user: Partial<User>): Promise<void> {
+    await this.mongo.findByIdAndUpdate(user.id, user);
   }
   async delete(id: string): Promise<void> {
     await this.mongo.findByIdAndDelete(id);
