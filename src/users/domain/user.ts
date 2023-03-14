@@ -7,7 +7,5 @@ export default class User {
     public name: string,
     public surname: string,
     public favoriteTeam: string
-  ) {
-    this.role = 'fan';
-  }
+  ) {}
 }
