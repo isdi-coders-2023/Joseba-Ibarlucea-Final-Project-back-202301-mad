@@ -13,13 +13,13 @@ export default class UserMongoRepo implements UserRepository {
     return data;
   }
   async find(id: string): Promise<User | null> {
-    const data = this.mongo.findById(id);
+    const data = await this.mongo.findById(id);
     return data;
   }
   async update(id: string): Promise<void> {
-    this.mongo.findByIdAndUpdate(id);
+    await this.mongo.findByIdAndUpdate(id);
   }
   async delete(id: string): Promise<void> {
-    this.mongo.findByIdAndDelete(id);
+    await this.mongo.findByIdAndDelete(id);
   }
 }
