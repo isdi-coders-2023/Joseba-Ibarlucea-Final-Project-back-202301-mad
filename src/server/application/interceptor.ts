@@ -27,4 +27,17 @@ export class Interceptors {
       next(error);
     }
   }
+
+  authorized(req: RequestCool, resp: Response, next: NextFunction) {
+    try {
+      if (!req.info)
+        throw new HTTPError(498, 'Token expired', 'No value in http header');
+
+      if (req.info.role === 'fan')
+        throw new HTTPError(498, 'Invalid role', 'Role is not Team Manager');
+      next();
+    } catch (error) {
+      next(error);
+    }
+  }
 }
