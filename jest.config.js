@@ -13,6 +13,6 @@ export default {
     'user.ts',
     'schema.ts',
     'model',
-    'server',
+    'express.server',
   ],
 };
