@@ -21,6 +21,14 @@ export default class ExpressServer {
   }
 
   routes(): void {
+    this.app.get('/', (_req, resp) => {
+      resp.json({
+        info: 'Fanat1c',
+        endpoints: {
+          users: '/users',
+        },
+      });
+    });
     this.routers.forEach((router) => {
       this.app.use(router.path, router.router);
     });
