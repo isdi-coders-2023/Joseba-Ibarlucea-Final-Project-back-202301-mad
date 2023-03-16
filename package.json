@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "copy:public": "copyfiles -u 1 src/public/**/*.* dist",
-    "start": "node cross-env DEBUG=Fntic* PORT=4321 ./dist/index.js",
+    "start": "cross-env DEBUG=Fntic* PORT=4321 node ./dist/index.js",
     "start:mon": "cross-env DEBUG=Fntic* PORT=4321 nodemon ./dist/index.js",
     "prebuild": "npm run copy:public",
     "build": "tsc -w",
