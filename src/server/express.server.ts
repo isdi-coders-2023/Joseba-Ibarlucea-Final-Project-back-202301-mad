@@ -2,6 +2,7 @@ import express, { Express } from 'express';
 import { dbConnect } from './infrastructure/db/db.connect.js';
 import ServerRouter from './server.router.interface.js';
 import createDebug from 'debug';
+import cors from 'cors';
 
 const debug = createDebug('Fntic: Express-server');
 
@@ -16,6 +17,7 @@ export default class ExpressServer {
 
   config(): void {
     this.app.use(express.json());
+    this.app.use(cors({ origin: '*' }));
   }
 
   routes(): void {
