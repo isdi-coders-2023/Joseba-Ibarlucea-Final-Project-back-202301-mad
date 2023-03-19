@@ -1,6 +1,6 @@
 import express, { Express } from 'express';
-import { dbConnect } from './infrastructure/db/db.connect.js';
-import ServerRouter from './server.router.interface.js';
+import { dbConnect } from './db/db.connect.js';
+import ServerRouter from '../server.router.interface.js';
 import createDebug from 'debug';
 import cors from 'cors';
 
