@@ -13,7 +13,7 @@ export default {
     'user.ts',
     'team.ts',
     'circuit.ts',
-    'driver.ts',
+    'drivers.ts',
     'schema.ts',
     'model',
     'express.server',
