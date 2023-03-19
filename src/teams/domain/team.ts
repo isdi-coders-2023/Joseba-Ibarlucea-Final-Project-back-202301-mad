@@ -1,5 +1,3 @@
-import { TeamPosition } from '../../common/types';
-
 export class Team {
   constructor(
     public id: string,
