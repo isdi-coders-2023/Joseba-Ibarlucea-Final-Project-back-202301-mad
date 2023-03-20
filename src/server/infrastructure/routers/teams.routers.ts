@@ -8,6 +8,7 @@ import TeamDestroyer from '../../../teams/application/team.destroyer.js';
 import TeamFinder from '../../../teams/application/team.finder.js';
 import TeamSearcher from '../../../teams/application/team.searcher.js';
 import TeamUpdater from '../../../teams/application/team.updater.js';
+import TeamQuery from '../../../teams/application/team.query.js';
 
 export default class TeamRouter implements ServerRouter {
   path: string = '/teams';
@@ -15,6 +16,7 @@ export default class TeamRouter implements ServerRouter {
   router: Router = Router();
 
   constructor(
+    private teamQuery: TeamQuery,
     private teamCreateMany: TeamCreateMany,
     private teamCreator: TeamCreator,
     private teamSearcher: TeamSearcher,
@@ -26,6 +28,13 @@ export default class TeamRouter implements ServerRouter {
   }
 
   registerControllers(): void {
+    this.router.get('/', async (req, res, next) => {
+      const data = await this.teamQuery.execute();
+      res.json({
+        results: [data],
+      });
+    });
+
     this.router.post('/many', async (req, res, next) => {
       try {
         const data = await this.teamCreateMany.execute(req.body);
