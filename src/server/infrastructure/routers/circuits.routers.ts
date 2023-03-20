@@ -10,7 +10,6 @@ import CircuitSearcher from '../../../circuits/application/circuit.searcher.js';
 import CircuitUpdater from '../../../circuits/application/circuit.updater.js';
 
 export default class CircuitsRouter implements ServerRouter {
- 
   path: string = '/circuits';
   interceptor: Interceptors = new Interceptors();
   router: Router = Router();
