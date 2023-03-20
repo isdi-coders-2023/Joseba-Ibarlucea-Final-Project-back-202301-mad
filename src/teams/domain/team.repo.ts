@@ -8,3 +8,4 @@ export default interface TeamRepository {
   update: (team: Partial<Team>) => Promise<void>;
   delete: (id: string) => Promise<void>;
 }
+MARICA QUIEN LEA
