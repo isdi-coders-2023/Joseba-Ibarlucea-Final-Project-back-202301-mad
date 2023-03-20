@@ -1,4 +1,3 @@
-import { Circuit } from '../domain/circuit';
 import CircuitRepository from '../domain/circuit.repo';
 
 export default class CircuitDestroyer {
