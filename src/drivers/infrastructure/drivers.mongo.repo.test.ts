@@ -44,7 +44,9 @@ describe('Given DriverMongoRepo', () => {
   });
   describe('When the find method is called', () => {
     test('Then it should call the findById method', async () => {
-      (mockModel.findById as jest.Mock).mockResolvedValue([{ id: '2' }]);
+      (mockModel.findById as jest.Mock).mockResolvedValue([
+        { id: '2', nationality: 'Spanish' },
+      ]);
 
       await repo.find('2');
 
@@ -54,7 +56,7 @@ describe('Given DriverMongoRepo', () => {
   describe('When the update method is called', () => {
     test('Then it should call the findByIdAndUpdate method', async () => {
       (mockModel.findByIdAndUpdate as jest.Mock).mockResolvedValue([
-        { id: '2' },
+        { id: '2', championships: 7 },
       ]);
 
       await repo.update({ id: '2' } as Driver);
