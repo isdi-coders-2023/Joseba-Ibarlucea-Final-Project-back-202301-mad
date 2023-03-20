@@ -34,6 +34,7 @@ import DriverDestroyer from './drivers/application/driver.destroyer.js';
 import DriverFinder from './drivers/application/driver.finder.js';
 import DriverSearcher from './drivers/application/driver.searcher.js';
 import DriverUpdater from './drivers/application/driver.updater.js';
+import TeamQuery from './teams/application/team.query.js';
 
 const bootstrap = async () => {
   const userRepo = new UserMongoRepo(UserModel);
@@ -60,8 +61,10 @@ const bootstrap = async () => {
   const teamFinder = new TeamFinder(teamRepo);
   const teamSearcher = new TeamSearcher(teamRepo);
   const teamUpdater = new TeamUpdater(teamRepo);
+  const teamQuery = new TeamQuery(teamRepo);
 
   const teamRouter = new TeamRouter(
+    teamQuery,
     teamCreateMany,
     teamCreator,
     teamSearcher,

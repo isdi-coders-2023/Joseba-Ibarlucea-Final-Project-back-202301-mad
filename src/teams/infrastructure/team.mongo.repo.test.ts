@@ -4,6 +4,7 @@ import TeamMongoRepo from './team.mongo.repo';
 
 describe('Given TeamMongoRepo', () => {
   const mockModel = {
+    query: jest.fn(),
     find: jest.fn(),
     create: jest.fn(),
     findById: jest.fn(),
@@ -13,6 +14,16 @@ describe('Given TeamMongoRepo', () => {
   } as unknown as typeof TeamModel;
 
   const repo = new TeamMongoRepo(mockModel);
+
+  describe('When the query method is called', () => {
+    test('Then it should call the query method', async () => {
+      (mockModel.find as jest.Mock).mockResolvedValue([]);
+
+      await repo.query();
+
+      expect(mockModel.find).toHaveBeenCalled();
+    });
+  });
 
   describe('When the insertMany method is called', () => {
     test('Then it should call the insertMany method', async () => {
