@@ -33,6 +33,7 @@ describe('Given CircuitMongoRepo', () => {
       expect(mockModel.create).toHaveBeenCalled();
     });
   });
+
   describe('When the search method is called', () => {
     test('Then it should call the find method', async () => {
       (mockModel.find as jest.Mock).mockResolvedValue([]);
@@ -42,6 +43,7 @@ describe('Given CircuitMongoRepo', () => {
       expect(mockModel.find).toHaveBeenCalled();
     });
   });
+
   describe('When the find method is called', () => {
     test('Then it should call the findById method', async () => {
       (mockModel.findById as jest.Mock).mockResolvedValue([]);
@@ -51,7 +53,8 @@ describe('Given CircuitMongoRepo', () => {
       expect(mockModel.findById).toHaveBeenCalled();
     });
   });
-  describe('When the update method is called', () => {
+
+  describe('When the method update is called', () => {
     test('Then it should call the findByIdAndUpdate method', async () => {
       (mockModel.findByIdAndUpdate as jest.Mock).mockResolvedValue([]);
 
@@ -60,6 +63,7 @@ describe('Given CircuitMongoRepo', () => {
       expect(mockModel.findByIdAndUpdate).toHaveBeenCalled();
     });
   });
+
   describe('When the delete method is called', () => {
     test('Then it should call the findByIdAndDelete method', async () => {
       (mockModel.findByIdAndDelete as jest.Mock).mockResolvedValue([]);
