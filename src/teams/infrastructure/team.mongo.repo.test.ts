@@ -35,18 +35,18 @@ describe('Given TeamMongoRepo', () => {
   });
   describe('When the search method is called', () => {
     test('Then it should call the find method', async () => {
-      (mockModel.find as jest.Mock).mockResolvedValue([{ name: 'team' }]);
+      (mockModel.find as jest.Mock).mockResolvedValue([{ poles: 2 }]);
 
-      await repo.search({ key: 'name', value: 'team' });
+      await repo.search({ key: 'poles', value: 2 });
 
       expect(mockModel.find).toHaveBeenCalled();
     });
   });
   describe('When the find method is called', () => {
     test('Then it should call the findById method', async () => {
-      (mockModel.findById as jest.Mock).mockResolvedValue([{ id: '2' }]);
+      (mockModel.findById as jest.Mock).mockResolvedValue([{ id: '33' }]);
 
-      await repo.find('2');
+      await repo.find('33');
 
       expect(mockModel.findById).toHaveBeenCalled();
     });
