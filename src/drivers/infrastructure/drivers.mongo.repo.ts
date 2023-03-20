@@ -1,7 +1,7 @@
 import { Driver } from '../domain/drivers';
 
 import DriverRepository from '../domain/driver.repo';
-import { DriverModel } from '../../server/domain/driver.mongo.repo';
+import { DriverModel } from '../../server/domain/driver.mongo.model';
 
 export default class DriverMongoRepo implements DriverRepository {
   constructor(private mongo: typeof DriverModel) {}

@@ -1,4 +1,4 @@
-import { DriverModel } from '../../server/domain/driver.mongo.repo';
+import { DriverModel } from '../../server/domain/driver.mongo.model';
 import { Driver } from '../domain/drivers';
 import DriverMongoRepo from './drivers.mongo.repo';
 
