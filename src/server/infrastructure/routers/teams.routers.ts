@@ -1,19 +1,15 @@
 import { Router } from 'express';
 import { Interceptors } from '../../application/interceptor.js';
 import { HTTPError } from '../../../common/error.js';
-import { Auth } from '../../application/auth.js';
 import ServerRouter from '../../server.router.interface.js';
-import { TokenPayload } from '../../domain/interface.js';
-import UserDestroyer from '../../../users/application/user.destroyer.js';
-import UserFinder from '../../../users/application/user.finder.js';
-import UserLogin from '../../../users/application/user.login.js';
-import UserRegister from '../../../users/application/user.register.js';
-import UserUpdater from '../../../users/application/user.updater.js';
 import TeamCreateMany from '../../../teams/application/team.create.many.js';
 import TeamCreator from '../../../teams/application/team.creator.js';
+import TeamDestroyer from '../../../teams/application/team.destroyer.js';
+import TeamFinder from '../../../teams/application/team.finder.js';
+import TeamSearcher from '../../../teams/application/team.searcher.js';
+import TeamUpdater from '../../../teams/application/team.updater.js';
 
 export default class TeamRouter implements ServerRouter {
-  // eslint-disable-next-line @typescript-eslint/no-inferrable-types
   path: string = '/teams';
   interceptor: Interceptors = new Interceptors();
   router: Router = Router();
@@ -21,23 +17,15 @@ export default class TeamRouter implements ServerRouter {
   constructor(
     private teamCreateMany: TeamCreateMany,
     private teamCreator: TeamCreator,
-    private userRegister: UserRegister,
-    private userLogin: UserLogin,
-    private userFinder: UserFinder,
-    private userUpdater: UserUpdater,
-    private userDestroyer: UserDestroyer
+    private teamSearcher: TeamSearcher,
+    private teamFinder: TeamFinder,
+    private teamUpdater: TeamUpdater,
+    private teamDestroyer: TeamDestroyer
   ) {
     this.registerControllers();
   }
 
   registerControllers(): void {
-    this.router.get(`/:id`, async (req, res, _next) => {
-      const { id } = req.params;
-      const response = await this.userFinder.execute(id);
-
-      res.status(200).json(response);
-    });
-
     this.router.post('/many', async (req, res, next) => {
       try {
         const data = await this.teamCreateMany.execute(req.body);
@@ -48,38 +36,19 @@ export default class TeamRouter implements ServerRouter {
         next(error);
       }
     });
-    this.router.post('/create', async (req, res, next) => {
-      try {
-        const data = await this.teamCreator.execute(req.body);
-        res.json({
-          results: [data],
-        });
-      } catch (error) {
-        next(error);
-      }
-    });
 
-    this.router.post('/register', async (req, res, next) => {
+    this.router.post('/create', async (req, res, next) => {
       try {
         const { body } = req;
 
-        if (
-          !req.body.email ||
-          !req.body.password ||
-          !req.body.name ||
-          !req.body.surname
-        )
+        if (!req.body.name || !req.body.logo || !req.body.championships)
           throw new HTTPError(
             401,
             'Unauthorized',
-            'Invalid Name, Email or password'
+            'Invalid Name, Logo or Championships'
           );
 
-        req.body.password = await Auth.hash(req.body.password);
-
-        req.body.role = 'fan';
-
-        const data = await this.userRegister.execute(body);
+        const data = await this.teamCreator.execute(body);
 
         res.status(201);
         res.json({
@@ -90,46 +59,37 @@ export default class TeamRouter implements ServerRouter {
       }
     });
 
-    this.router.post('/login', async (req, res, next) => {
+    this.router.get(`/:id`, async (req, res, next) => {
       try {
-        if (!req.body.email || !req.body.password)
-          throw new HTTPError(401, 'Unauthorized', 'Invalid Email or password');
+        if (!req.params.id)
+          throw new HTTPError(404, 'Team not found', 'Team id not found');
 
-        const data = await this.userLogin.execute({
-          key: 'email',
-          value: req.body.email,
-        });
+        const { id } = req.params;
+        const response = await this.teamFinder.execute(id);
 
-        if (!data.length)
-          throw new HTTPError(401, 'Unauthorized', 'username not found');
-
-        if (!(await Auth.compare(req.body.password, data[0].password)))
-          throw new HTTPError(401, 'Unauthorized', 'Password not match');
-
-        const payload: TokenPayload = {
-          id: data[0].id,
-          email: data[0].email,
-          role: 'Admin',
-        };
-
-        const token = Auth.createJWT(payload);
-        res.status(202);
-        res.json({
-          results: {
-            token,
-          },
-        });
+        res.status(200).json(response);
       } catch (error) {
         next(error);
       }
     });
 
-    this.router.get('/:id', this.interceptor.logged, async (req, res, next) => {
+    this.router.get('/:name', async (req, res, next) => {
       try {
-        const { id } = req.params;
-        const response = await this.userFinder.execute(id);
+        if (!req.body.name)
+          throw new HTTPError(401, 'Unauthorized', 'Invalid Email or password');
 
-        res.status(200).json(response);
+        const data = await this.teamSearcher.execute({
+          key: 'name',
+          value: req.body.name,
+        });
+
+        if (!data.length)
+          throw new HTTPError(401, 'Unauthorized', 'username not found');
+
+        res.status(202);
+        res.json({
+          results: [data],
+        });
       } catch (error) {
         next(error);
       }
@@ -140,12 +100,12 @@ export default class TeamRouter implements ServerRouter {
         const { id } = req.params;
         const { body } = req;
 
-        const newUser = {
+        const modifiedTeam = {
           id,
           ...body,
         };
 
-        await this.userUpdater.execute(newUser);
+        await this.teamUpdater.execute(modifiedTeam);
 
         res.sendStatus(200);
       } catch (error) {
@@ -160,7 +120,7 @@ export default class TeamRouter implements ServerRouter {
         try {
           const { id } = req.params;
 
-          await this.userDestroyer.execute(id);
+          await this.teamDestroyer.execute(id);
 
           res.sendStatus(204);
         } catch (error) {
