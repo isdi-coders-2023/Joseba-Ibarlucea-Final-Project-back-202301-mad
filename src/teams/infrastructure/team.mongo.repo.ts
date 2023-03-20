@@ -4,6 +4,12 @@ import TeamRepository from '../domain/team.repo';
 
 export default class TeamMongoRepo implements TeamRepository {
   constructor(private mongo: typeof TeamModel) {}
+
+  async query(): Promise<Team[]> {
+    const data = this.mongo.find();
+    return data;
+  }
+
   async createMany(teams: Team[]): Promise<Team[]> {
     const data = await this.mongo.insertMany(teams);
     return data;
