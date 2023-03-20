@@ -1,4 +1,3 @@
-import createDebug from 'debug';
 import UserRouter from './server/infrastructure/routers/users.routers.js';
 import UserRegister from './users/application/user.register.js';
 import UserLogin from './users/application/user.login.js';
@@ -18,11 +17,23 @@ import CircuitMongoRepo from './circuits/infrastructure/circuit.mongo.repo.js';
 import { CircuitModel } from './server/domain/circuit.mongo.model.js';
 import CircuitRouter from './server/infrastructure/routers/circuits.routers.js';
 import DriverCreateMany from './drivers/application/driver.create.many.js';
-import { DriverModel } from './server/domain/driver.mongo.repo.js';
+import { DriverModel } from './server/domain/driver.mongo.model.js';
 import DriverRouter from './server/infrastructure/routers/drivers.routers.js';
 import DriverMongoRepo from './drivers/infrastructure/drivers.mongo.repo.js';
-
-const debug = createDebug('Fntic: app');
+import TeamDestroyer from './teams/application/team.destroyer.js';
+import TeamFinder from './teams/application/team.finder.js';
+import TeamSearcher from './teams/application/team.searcher.js';
+import TeamUpdater from './teams/application/team.updater.js';
+import CircuitCreator from './circuits/application/circuit.creator.js';
+import CircuitDestroyer from './circuits/application/circuit.destroyer.js';
+import CircuitFinder from './circuits/application/circuit.finder.js';
+import CircuitSearcher from './circuits/application/circuit.searcher.js';
+import CircuitUpdater from './circuits/application/circuit.updater.js';
+import DriverCreator from './drivers/application/driver.creator.js';
+import DriverDestroyer from './drivers/application/driver.destroyer.js';
+import DriverFinder from './drivers/application/driver.finder.js';
+import DriverSearcher from './drivers/application/driver.searcher.js';
+import DriverUpdater from './drivers/application/driver.updater.js';
 
 const bootstrap = async () => {
   const userRepo = new UserMongoRepo(UserModel);
@@ -45,24 +56,51 @@ const bootstrap = async () => {
 
   const teamCreator = new TeamCreator(teamRepo);
   const teamCreateMany = new TeamCreateMany(teamRepo);
+  const teamDestroyer = new TeamDestroyer(teamRepo);
+  const teamFinder = new TeamFinder(teamRepo);
+  const teamSearcher = new TeamSearcher(teamRepo);
+  const teamUpdater = new TeamUpdater(teamRepo);
 
   const teamRouter = new TeamRouter(
     teamCreateMany,
     teamCreator,
-    userRegister,
-    userLogin,
-    userFinder,
-    userUpdater,
-    userDestroyer
+    teamSearcher,
+    teamFinder,
+    teamUpdater,
+    teamDestroyer
   );
 
   const circuitCreateMany = new CircuitCreateMany(circuitRepo);
+  const circuitCreator = new CircuitCreator(circuitRepo);
+  const circuitDestroyer = new CircuitDestroyer(circuitRepo);
+  const circuitFinder = new CircuitFinder(circuitRepo);
+  const circuitSearcher = new CircuitSearcher(circuitRepo);
+  const circuitUpdater = new CircuitUpdater(circuitRepo);
 
-  const circuitRouter = new CircuitRouter(circuitCreateMany, teamCreator);
+  const circuitRouter = new CircuitRouter(
+    circuitCreateMany,
+    circuitCreator,
+    circuitDestroyer,
+    circuitFinder,
+    circuitSearcher,
+    circuitUpdater
+  );
 
   const driverCreateMany = new DriverCreateMany(driverRepo);
+  const driverCreator = new DriverCreator(driverRepo);
+  const driverDestroyer = new DriverDestroyer(driverRepo);
+  const driverFinder = new DriverFinder(driverRepo);
+  const driverSearcher = new DriverSearcher(driverRepo);
+  const driverUpdater = new DriverUpdater(driverRepo);
 
-  const driverRouter = new DriverRouter(driverCreateMany, teamCreator);
+  const driverRouter = new DriverRouter(
+    driverCreateMany,
+    driverCreator,
+    driverDestroyer,
+    driverFinder,
+    driverSearcher,
+    driverUpdater
+  );
 
   const server = new ExpressServer([
     userRouter,
