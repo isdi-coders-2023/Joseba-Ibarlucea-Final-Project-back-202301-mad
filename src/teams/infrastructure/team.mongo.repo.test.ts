@@ -26,7 +26,9 @@ describe('Given TeamMongoRepo', () => {
 
   describe('When the create method is called', () => {
     test('Then it should call the create method', async () => {
-      (mockModel.create as jest.Mock).mockResolvedValue([{ name: 'F1 Team' }]);
+      (mockModel.create as jest.Mock).mockResolvedValue([
+        { name: 'F1 Team', motor: 'fast' },
+      ]);
 
       await repo.create({ name: 'F1 Team' } as Team);
 
