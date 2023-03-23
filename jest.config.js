@@ -14,6 +14,7 @@ export default {
     'team.ts',
     'circuit.ts',
     'drivers.ts',
+    'ranking.ts',
     'schema.ts',
     'model',
     'express.server',

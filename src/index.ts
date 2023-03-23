@@ -35,12 +35,18 @@ import DriverFinder from './drivers/application/driver.finder.js';
 import DriverSearcher from './drivers/application/driver.searcher.js';
 import DriverUpdater from './drivers/application/driver.updater.js';
 import TeamQuery from './teams/application/team.query.js';
+import RankingCreator from './rankings/application/ranking.creator.js';
+import RankingMongoRepo from './rankings/infrastructure/ranking.mongo.repo.js';
+import { RankingModel } from './server/domain/ranking.mongo.model.js';
+import RankingRouter from './server/infrastructure/routers/rankings.router.js';
+import RankingQuerier from './rankings/application/ranking.querier.js';
 
 const bootstrap = async () => {
   const userRepo = new UserMongoRepo(UserModel);
   const teamRepo = new TeamMongoRepo(TeamModel);
   const circuitRepo = new CircuitMongoRepo(CircuitModel);
   const driverRepo = new DriverMongoRepo(DriverModel);
+  const rankingRepo = new RankingMongoRepo(RankingModel);
 
   const userRegister = new UserRegister(userRepo);
   const userLogin = new UserLogin(userRepo);
@@ -105,11 +111,17 @@ const bootstrap = async () => {
     driverUpdater
   );
 
+  const rankingCreator = new RankingCreator(rankingRepo);
+  const rankingQuerier = new RankingQuerier(rankingRepo);
+
+  const rankingRouter = new RankingRouter(rankingCreator, rankingQuerier);
+
   const server = new ExpressServer([
     userRouter,
     teamRouter,
     circuitRouter,
     driverRouter,
+    rankingRouter,
   ]);
 
   server.start(4321);
