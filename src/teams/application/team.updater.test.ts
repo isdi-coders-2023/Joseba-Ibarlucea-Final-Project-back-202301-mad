@@ -1,6 +1,6 @@
 import TeamUpdater from './team.updater';
 import TeamRepository from '../domain/team.repo';
-import { Team } from '../domain/team';
+import Team from '../domain/team';
 
 describe('Given TeamUpdater use case', () => {
   const repo = {

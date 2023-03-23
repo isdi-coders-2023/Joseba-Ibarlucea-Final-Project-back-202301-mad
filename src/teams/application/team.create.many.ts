@@ -1,4 +1,4 @@
-import { Team } from '../domain/team';
+import Team from '../domain/team';
 import TeamRepository from '../domain/team.repo';
 
 export default class TeamCreateMany {

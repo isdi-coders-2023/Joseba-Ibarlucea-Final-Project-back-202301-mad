@@ -1,5 +1,5 @@
 import { TeamModel } from '../../server/domain/team.mongo.model';
-import { Team } from '../domain/team';
+import Team from '../domain/team';
 import TeamMongoRepo from './team.mongo.repo';
 
 describe('Given TeamMongoRepo', () => {
