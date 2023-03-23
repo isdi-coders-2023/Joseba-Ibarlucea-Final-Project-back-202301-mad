@@ -1,4 +1,3 @@
-import { Ranking } from '../domain/ranking';
 import RankingRepository from '../domain/ranking.repo';
 import RankingCreator from './ranking.creator';
 

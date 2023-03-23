@@ -38,7 +38,7 @@ import TeamQuery from './teams/application/team.query.js';
 import RankingCreator from './rankings/application/ranking.creator.js';
 import RankingMongoRepo from './rankings/infrastructure/ranking.mongo.repo.js';
 import { RankingModel } from './server/domain/ranking.mongo.model.js';
-import RankingRouter from './server/infrastructure/routers/rankings.router.js';
+import RankingRouter from './server/infrastructure/routers/rankings.routers.js';
 import RankingQuerier from './rankings/application/ranking.querier.js';
 
 const bootstrap = async () => {
