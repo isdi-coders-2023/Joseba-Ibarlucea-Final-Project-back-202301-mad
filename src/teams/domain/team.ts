@@ -1,4 +1,4 @@
-export class Team {
+export default class Team {
   constructor(
     public id: string,
     public name: string,

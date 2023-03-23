@@ -1,6 +1,6 @@
 import TeamCreator from './team.creator';
 import TeamRepository from '../domain/team.repo';
-import { Team } from '../domain/team';
+import  Team  from '../domain/team';
 
 describe('Given TeamCreator use case', () => {
   const repo = {

@@ -1,5 +1,5 @@
 import { TeamModel } from '../../server/domain/team.mongo.model';
-import { Team } from '../domain/team';
+import  Team  from '../domain/team';
 import TeamRepository from '../domain/team.repo';
 
 export default class TeamMongoRepo implements TeamRepository {

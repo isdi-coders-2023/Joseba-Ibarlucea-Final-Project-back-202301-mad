@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose';
-import { Team } from '../../teams/domain/team';
+import Team from '../../teams/domain/team';
 
 const teamSchema = new Schema<Team>({
   name: {
