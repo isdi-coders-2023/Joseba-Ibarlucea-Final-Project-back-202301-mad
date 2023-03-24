@@ -14,8 +14,8 @@ describe('Given CircuitMongoRepo', () => {
 
   const repo = new CircuitMongoRepo(mockModel);
 
-  describe('When the find method is called', () => {
-    test('Then it should call the findById method', async () => {
+  describe('When the query method is called in circuits', () => {
+    test('Then it should call the find method', async () => {
       (mockModel.find as jest.Mock).mockResolvedValue([
         { location: 'country' },
       ]);

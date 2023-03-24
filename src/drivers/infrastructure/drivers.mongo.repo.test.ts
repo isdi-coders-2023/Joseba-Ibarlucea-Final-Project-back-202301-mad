@@ -14,9 +14,11 @@ describe('Given DriverMongoRepo', () => {
 
   const repo = new DriverMongoRepo(mockModel);
 
-  describe('When the query method is called', () => {
+  describe('When the query method is called in drivers', () => {
     test('Then it should call the find method', async () => {
-      (mockModel.find as jest.Mock).mockResolvedValue([{ name: 'pepe' }]);
+      (mockModel.find as jest.Mock).mockResolvedValue([
+        { name: 'pepe', number: '23' },
+      ]);
 
       await repo.query();
 
