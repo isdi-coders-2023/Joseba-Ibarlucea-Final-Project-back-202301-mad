@@ -12,6 +12,10 @@ describe('Given CircuitMongoRepo', () => {
     insertMany: jest.fn(),
   } as unknown as typeof CircuitModel;
 
+  const search = [{ name: 'test' }];
+  const searchQuery = { key: 'name', value: 'test' };
+  const createMany = [{ location: 'Country' }];
+
   const repo = new CircuitMongoRepo(mockModel);
 
   describe('When the query method is called in circuits', () => {
@@ -28,9 +32,9 @@ describe('Given CircuitMongoRepo', () => {
 
   describe('When the insertMany method is called', () => {
     test('Then it should call the insertMany method', async () => {
-      (mockModel.insertMany as jest.Mock).mockResolvedValue([]);
+      (mockModel.insertMany as jest.Mock).mockResolvedValue(createMany);
 
-      await repo.createMany([]);
+      await repo.createMany(createMany as unknown as Circuit[]);
 
       expect(mockModel.insertMany).toHaveBeenCalled();
     });
@@ -48,9 +52,9 @@ describe('Given CircuitMongoRepo', () => {
 
   describe('When the search method is called', () => {
     test('Then it should call the find method', async () => {
-      (mockModel.find as jest.Mock).mockResolvedValue([{ name: 'test' }]);
+      (mockModel.find as jest.Mock).mockResolvedValue(search);
 
-      await repo.search({ key: 'name', value: 'test' });
+      await repo.search(searchQuery);
 
       expect(mockModel.find).toHaveBeenCalled();
     });
