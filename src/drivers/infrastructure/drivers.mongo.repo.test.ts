@@ -1,6 +1,7 @@
 import { DriverModel } from '../../server/domain/driver.mongo.model';
 import { Driver } from '../domain/drivers';
 import DriverMongoRepo from './drivers.mongo.repo';
+import { createMany } from '../../common/test.mocks';
 
 describe('Given DriverMongoRepo', () => {
   const mockModel = {
@@ -28,9 +29,9 @@ describe('Given DriverMongoRepo', () => {
 
   describe('When the insertMany method is called', () => {
     test('Then it should call the insertMany method', async () => {
-      (mockModel.insertMany as jest.Mock).mockResolvedValue([]);
+      (mockModel.insertMany as jest.Mock).mockResolvedValue(createMany);
 
-      await repo.createMany([]);
+      await repo.createMany(createMany as unknown as Driver[]);
 
       expect(mockModel.insertMany).toHaveBeenCalled();
     });

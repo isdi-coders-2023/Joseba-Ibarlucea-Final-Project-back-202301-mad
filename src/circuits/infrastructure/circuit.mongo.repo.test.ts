@@ -1,6 +1,7 @@
 import { CircuitModel } from '../../server/domain/circuit.mongo.model';
 import { Circuit } from '../domain/circuit';
 import CircuitMongoRepo from './circuit.mongo.repo';
+import { search, searchQuery, createMany } from '../../common/test.mocks';
 
 describe('Given CircuitMongoRepo', () => {
   const mockModel = {
@@ -11,10 +12,6 @@ describe('Given CircuitMongoRepo', () => {
     findByIdAndDelete: jest.fn(),
     insertMany: jest.fn(),
   } as unknown as typeof CircuitModel;
-
-  const search = [{ name: 'test' }];
-  const searchQuery = { key: 'name', value: 'test' };
-  const createMany = [{ location: 'Country' }];
 
   const repo = new CircuitMongoRepo(mockModel);
 
