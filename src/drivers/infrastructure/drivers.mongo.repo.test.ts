@@ -14,6 +14,16 @@ describe('Given DriverMongoRepo', () => {
 
   const repo = new DriverMongoRepo(mockModel);
 
+  describe('When the query method is called', () => {
+    test('Then it should call the find method', async () => {
+      (mockModel.find as jest.Mock).mockResolvedValue([{ name: 'pepe' }]);
+
+      await repo.query();
+
+      expect(mockModel.find).toHaveBeenCalled();
+    });
+  });
+
   describe('When the insertMany method is called', () => {
     test('Then it should call the insertMany method', async () => {
       (mockModel.insertMany as jest.Mock).mockResolvedValue([]);
