@@ -40,6 +40,7 @@ import RankingMongoRepo from './rankings/infrastructure/ranking.mongo.repo.js';
 import { RankingModel } from './server/domain/ranking.mongo.model.js';
 import RankingRouter from './server/infrastructure/routers/rankings.routers.js';
 import RankingQuerier from './rankings/application/ranking.querier.js';
+import CircuitQuerier from './circuits/application/circuit.querier.js';
 
 const bootstrap = async () => {
   const userRepo = new UserMongoRepo(UserModel);
@@ -85,8 +86,10 @@ const bootstrap = async () => {
   const circuitFinder = new CircuitFinder(circuitRepo);
   const circuitSearcher = new CircuitSearcher(circuitRepo);
   const circuitUpdater = new CircuitUpdater(circuitRepo);
+  const circuitQuerier = new CircuitQuerier(circuitRepo);
 
   const circuitRouter = new CircuitRouter(
+    circuitQuerier,
     circuitCreateMany,
     circuitCreator,
     circuitDestroyer,

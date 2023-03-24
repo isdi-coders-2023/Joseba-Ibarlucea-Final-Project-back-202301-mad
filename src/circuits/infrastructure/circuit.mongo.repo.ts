@@ -4,6 +4,12 @@ import CircuitRepository from '../domain/circuit.repo';
 
 export default class CircuitMongoRepo implements CircuitRepository {
   constructor(private mongo: typeof CircuitModel) {}
+
+  async query(): Promise<Circuit[]> {
+    const data = await this.mongo.find();
+    return data;
+  }
+
   async createMany(circuits: Circuit[]): Promise<Circuit[]> {
     const data = await this.mongo.insertMany(circuits);
     return data;
