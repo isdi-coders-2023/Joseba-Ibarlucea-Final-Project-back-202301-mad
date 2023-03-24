@@ -41,6 +41,7 @@ import { RankingModel } from './server/domain/ranking.mongo.model.js';
 import RankingRouter from './server/infrastructure/routers/rankings.routers.js';
 import RankingQuerier from './rankings/application/ranking.querier.js';
 import CircuitQuerier from './circuits/application/circuit.querier.js';
+import DriverQuerier from './drivers/application/driver.querier.js';
 
 const bootstrap = async () => {
   const userRepo = new UserMongoRepo(UserModel);
@@ -104,8 +105,10 @@ const bootstrap = async () => {
   const driverFinder = new DriverFinder(driverRepo);
   const driverSearcher = new DriverSearcher(driverRepo);
   const driverUpdater = new DriverUpdater(driverRepo);
+  const driverQuerier = new DriverQuerier(driverRepo);
 
   const driverRouter = new DriverRouter(
+    driverQuerier,
     driverCreateMany,
     driverCreator,
     driverDestroyer,

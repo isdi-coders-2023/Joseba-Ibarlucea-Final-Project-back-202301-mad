@@ -1,6 +1,8 @@
 import { Driver } from './drivers';
 
 export default interface DriverRepository {
+  query: () => Promise<Driver[]>;
+
   createMany: (drivers: Driver[]) => Promise<Driver[]>;
   create: (driver: Driver) => Promise<Driver>;
   search: (query: { key: string; value: unknown }) => Promise<Driver[]>;
