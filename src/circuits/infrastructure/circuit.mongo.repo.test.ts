@@ -14,6 +14,18 @@ describe('Given CircuitMongoRepo', () => {
 
   const repo = new CircuitMongoRepo(mockModel);
 
+  describe('When the find method is called', () => {
+    test('Then it should call the findById method', async () => {
+      (mockModel.find as jest.Mock).mockResolvedValue([
+        { location: 'country' },
+      ]);
+
+      await repo.query();
+
+      expect(mockModel.find).toHaveBeenCalled();
+    });
+  });
+
   describe('When the insertMany method is called', () => {
     test('Then it should call the insertMany method', async () => {
       (mockModel.insertMany as jest.Mock).mockResolvedValue([]);
