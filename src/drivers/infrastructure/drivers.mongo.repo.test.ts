@@ -1,6 +1,7 @@
 import { DriverModel } from '../../server/domain/driver.mongo.model';
 import { Driver } from '../domain/drivers';
 import DriverMongoRepo from './drivers.mongo.repo';
+import { createMany } from '../../common/test.mocks';
 
 describe('Given DriverMongoRepo', () => {
   const mockModel = {
@@ -14,11 +15,23 @@ describe('Given DriverMongoRepo', () => {
 
   const repo = new DriverMongoRepo(mockModel);
 
+  describe('When the query method is called in drivers', () => {
+    test('Then it should call the find method', async () => {
+      (mockModel.find as jest.Mock).mockResolvedValue([
+        { name: 'pepe', number: '23' },
+      ]);
+
+      await repo.query();
+
+      expect(mockModel.find).toHaveBeenCalled();
+    });
+  });
+
   describe('When the insertMany method is called', () => {
     test('Then it should call the insertMany method', async () => {
-      (mockModel.insertMany as jest.Mock).mockResolvedValue([]);
+      (mockModel.insertMany as jest.Mock).mockResolvedValue(createMany);
 
-      await repo.createMany([]);
+      await repo.createMany(createMany as unknown as Driver[]);
 
       expect(mockModel.insertMany).toHaveBeenCalled();
     });

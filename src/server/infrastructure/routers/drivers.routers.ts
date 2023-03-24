@@ -8,6 +8,7 @@ import DriverDestroyer from '../../../drivers/application/driver.destroyer.js';
 import DriverFinder from '../../../drivers/application/driver.finder.js';
 import DriverSearcher from '../../../drivers/application/driver.searcher.js';
 import DriverUpdater from '../../../drivers/application/driver.updater.js';
+import DriverQuerier from '../../../drivers/application/driver.querier.js';
 
 export default class DriverRouter implements ServerRouter {
   path: string = '/drivers';
@@ -15,6 +16,7 @@ export default class DriverRouter implements ServerRouter {
   router: Router = Router();
 
   constructor(
+    private driverQuerier: DriverQuerier,
     private driverCreateMany: DriverCreateMany,
     private driverCreator: DriverCreator,
     private driverDestroyer: DriverDestroyer,
@@ -26,6 +28,18 @@ export default class DriverRouter implements ServerRouter {
   }
 
   registerControllers(): void {
+    this.router.get('/', async (req, res, next) => {
+      try {
+        const data = await this.driverQuerier.execute();
+
+        res.json({
+          results: data,
+        });
+      } catch (error) {
+        next(error);
+      }
+    });
+
     this.router.post('/many', async (req, res, next) => {
       try {
         const data = await this.driverCreateMany.execute(req.body);

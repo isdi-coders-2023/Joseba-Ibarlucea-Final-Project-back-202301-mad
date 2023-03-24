@@ -5,6 +5,11 @@ import { DriverModel } from '../../server/domain/driver.mongo.model';
 
 export default class DriverMongoRepo implements DriverRepository {
   constructor(private mongo: typeof DriverModel) {}
+
+  async query(): Promise<Driver[]> {
+    return this.mongo.find();
+  }
+
   async createMany(drivers: Driver[]): Promise<Driver[]> {
     const data = await this.mongo.insertMany(drivers);
     return data;

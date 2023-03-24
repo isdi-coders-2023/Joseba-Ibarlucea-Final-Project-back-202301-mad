@@ -1,6 +1,7 @@
 import { CircuitModel } from '../../server/domain/circuit.mongo.model';
 import { Circuit } from '../domain/circuit';
 import CircuitMongoRepo from './circuit.mongo.repo';
+import { search, searchQuery, createMany } from '../../common/test.mocks';
 
 describe('Given CircuitMongoRepo', () => {
   const mockModel = {
@@ -14,11 +15,23 @@ describe('Given CircuitMongoRepo', () => {
 
   const repo = new CircuitMongoRepo(mockModel);
 
+  describe('When the query method is called in circuits', () => {
+    test('Then it should call the find method', async () => {
+      (mockModel.find as jest.Mock).mockResolvedValue([
+        { location: 'country' },
+      ]);
+
+      await repo.query();
+
+      expect(mockModel.find).toHaveBeenCalled();
+    });
+  });
+
   describe('When the insertMany method is called', () => {
     test('Then it should call the insertMany method', async () => {
-      (mockModel.insertMany as jest.Mock).mockResolvedValue([]);
+      (mockModel.insertMany as jest.Mock).mockResolvedValue(createMany);
 
-      await repo.createMany([]);
+      await repo.createMany(createMany as unknown as Circuit[]);
 
       expect(mockModel.insertMany).toHaveBeenCalled();
     });
@@ -36,9 +49,9 @@ describe('Given CircuitMongoRepo', () => {
 
   describe('When the search method is called', () => {
     test('Then it should call the find method', async () => {
-      (mockModel.find as jest.Mock).mockResolvedValue([{ name: 'test' }]);
+      (mockModel.find as jest.Mock).mockResolvedValue(search);
 
-      await repo.search({ key: 'name', value: 'test' });
+      await repo.search(searchQuery);
 
       expect(mockModel.find).toHaveBeenCalled();
     });

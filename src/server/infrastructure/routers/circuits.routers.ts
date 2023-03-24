@@ -8,6 +8,7 @@ import CircuitDestroyer from '../../../circuits/application/circuit.destroyer.js
 import CircuitFinder from '../../../circuits/application/circuit.finder.js';
 import CircuitSearcher from '../../../circuits/application/circuit.searcher.js';
 import CircuitUpdater from '../../../circuits/application/circuit.updater.js';
+import CircuitQuerier from '../../../circuits/application/circuit.querier.js';
 
 export default class CircuitsRouter implements ServerRouter {
   path: string = '/circuits';
@@ -15,6 +16,7 @@ export default class CircuitsRouter implements ServerRouter {
   router: Router = Router();
 
   constructor(
+    private circuitQuerier: CircuitQuerier,
     private circuitCreateMany: CircuitCreateMany,
     private circuitCreator: CircuitCreator,
     private circuitDestroyer: CircuitDestroyer,
@@ -26,6 +28,18 @@ export default class CircuitsRouter implements ServerRouter {
   }
 
   registerControllers(): void {
+    this.router.get('/', async (req, res, next) => {
+      try {
+        const data = await this.circuitQuerier.execute();
+
+        res.json({
+          results: data,
+        });
+      } catch (error) {
+        next(error);
+      }
+    });
+
     this.router.post('/many', async (req, res, next) => {
       try {
         const data = await this.circuitCreateMany.execute(req.body);
