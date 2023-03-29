@@ -4,14 +4,13 @@ import { Driver } from '../../drivers/domain/drivers';
 const driverSchema = new Schema<Driver>({
   name: {
     type: String,
-    required: true,
   },
-  image: { type: String, required: true },
-  nationality: { type: String, required: true },
-  racingNumber: { type: Number, required: true },
-  championships: { type: Number, required: true },
-  podiums: { type: Number, required: true },
-  team: { type: String, required: true },
+  image: { type: String },
+  nationality: { type: String },
+  racingNumber: { type: Number },
+  championships: { type: Number },
+  podiums: { type: Number },
+  team: { type: String },
 });
 
 driverSchema.set('toJSON', {

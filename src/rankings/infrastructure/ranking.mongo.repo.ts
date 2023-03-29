@@ -11,6 +11,12 @@ export default class RankingMongoRepo implements RankingRepository {
   }
 
   query(): Promise<Ranking[]> {
-    return this.mongo.find();
+    return this.mongo
+      .find()
+      .populate([
+        { path: 'team', select: 'name' },
+        { path: 'driver', select: ['name', 'image'] },
+      ])
+      .sort({ position: 1 });
   }
 }

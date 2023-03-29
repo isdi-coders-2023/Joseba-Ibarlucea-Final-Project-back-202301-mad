@@ -1,3 +1,5 @@
+import { Driver } from '../../drivers/domain/drivers';
+
 export default class Team {
   constructor(
     public id: string,
@@ -8,6 +10,9 @@ export default class Team {
     public poles: number,
     public fastestLaps: number,
     public chassis: string,
-    public engine: string
+    public engine: string,
+    public car: string,
+    public driver1?: Driver['id'],
+    public driver2?: Driver['id']
   ) {}
 }

@@ -34,6 +34,17 @@ const teamSchema = new Schema<Team>({
     type: String,
     required: true,
   },
+  car: {
+    type: String,
+  },
+  driver1: {
+    type: Schema.Types.ObjectId,
+    ref: 'Driver',
+  },
+  driver2: {
+    type: Schema.Types.ObjectId,
+    ref: 'Driver',
+  },
 });
 
 teamSchema.set('toJSON', {

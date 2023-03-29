@@ -68,7 +68,11 @@ export default class UserRouter implements ServerRouter {
     this.router.post('/login', async (req, res, next) => {
       try {
         if (!req.body.email || !req.body.password)
-          throw new HTTPError(401, 'Unauthorized', 'Invalid Email or password');
+          throw new HTTPError(
+            401,
+            'Invalid Email or password',
+            'Unauthorized invalid Email or password'
+          );
 
         const data = await this.userLogin.execute({
           key: 'email',
@@ -84,7 +88,7 @@ export default class UserRouter implements ServerRouter {
         const payload: TokenPayload = {
           id: data[0].id,
           email: data[0].email,
-          role: 'Admin',
+          role: data[0].role,
         };
 
         const token = Auth.createJWT(payload);
@@ -92,6 +96,7 @@ export default class UserRouter implements ServerRouter {
         res.json({
           results: {
             token,
+            role: data[0].role,
           },
         });
       } catch (error) {

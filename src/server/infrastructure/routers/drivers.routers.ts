@@ -85,12 +85,12 @@ export default class DriverRouter implements ServerRouter {
       }
     });
 
-    this.router.put('/:id', async (req, res, next) => {
+    this.router.patch('/:id', async (req, res, next) => {
       try {
         const { id } = req.params;
         const { body } = req;
         if (!id) throw new HTTPError(404, 'Not Found', 'Driver not found');
-
+        console.log(body);
         await this.driverUpdater.execute(body);
 
         res.sendStatus(200);

@@ -1,12 +1,15 @@
 import { TeamModel } from '../../server/domain/team.mongo.model';
-import  Team  from '../domain/team';
+import Team from '../domain/team';
 import TeamRepository from '../domain/team.repo';
 
 export default class TeamMongoRepo implements TeamRepository {
   constructor(private mongo: typeof TeamModel) {}
 
   async query(): Promise<Team[]> {
-    const data = this.mongo.find();
+    const data = this.mongo.find().populate([
+      { path: 'driver1', select: ['name', 'image', 'racingNumber'] },
+      { path: 'driver2', select: ['name', 'image', 'racingNumber'] },
+    ]);
     return data;
   }
 
@@ -23,7 +26,10 @@ export default class TeamMongoRepo implements TeamRepository {
     return data;
   }
   async find(id: string): Promise<Team | null> {
-    const data = await this.mongo.findById(id);
+    const data = await this.mongo.findById(id).populate([
+      { path: 'driver1', select: ['name', 'image', 'racingNumber'] },
+      { path: 'driver2', select: ['name', 'image', 'racingNumber'] },
+    ]);
     return data;
   }
   async update(team: Partial<Team>): Promise<void> {
